@@ -35,6 +35,9 @@ export class Article {
     json: true,
     method: 'GET',
     headers: { 'api-key': this.token },
+    retry: {
+      maxRetryAfter: 500000,
+    },
   }).then((res: got.Response<ArticleApiResponse[]>) =>
     res.body.reduce<Record<number, string>>((articlesMap, article) => {
       articlesMap[article.id] = article.body_markdown;
@@ -127,6 +130,9 @@ export class Article {
       method: 'PUT',
       headers: { 'api-key': this.token },
       body,
+      retry: {
+        maxRetryAfter: 500000,
+      },
     })
       .then(() => ({
         articleId: this.articleConfig.id,
